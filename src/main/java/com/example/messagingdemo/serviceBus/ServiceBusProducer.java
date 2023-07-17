@@ -20,10 +20,18 @@ public class ServiceBusProducer {
 
     ObjectMapper objectMapper = new ObjectMapper();
 
-    private static final String QUEUE_NAME = "<queue name>";
+    private static final String QUEUE1_NAME = "demoqueue";
+    private static final String QUEUE2_NAME = "queueaks";
 
-    public void SendMsg(MenuOrder menuOrder) throws JsonProcessingException {
-        serviceBusTemplate.sendAsync(QUEUE_NAME, MessageBuilder.withPayload(objectMapper.writeValueAsString(menuOrder)).build()).subscribe();
+
+    public void SendMsgQ1(MenuOrder menuOrder) throws JsonProcessingException {
+        serviceBusTemplate.sendAsync(QUEUE1_NAME, MessageBuilder.withPayload(objectMapper.writeValueAsString(menuOrder)).build()).subscribe();
+        log.info("*******************ServiceBUS_MessageSent************: {}", menuOrder.toString());
+    }
+
+
+    public void SendMsgQ2(MenuOrder menuOrder) throws JsonProcessingException {
+        serviceBusTemplate.sendAsync(QUEUE2_NAME, MessageBuilder.withPayload(objectMapper.writeValueAsString(menuOrder)).build()).subscribe();
         log.info("*******************ServiceBUS_MessageSent************: {}", menuOrder.toString());
     }
 

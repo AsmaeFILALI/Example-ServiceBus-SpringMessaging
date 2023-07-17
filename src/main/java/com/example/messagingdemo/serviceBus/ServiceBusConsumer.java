@@ -8,25 +8,32 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.awt.*;
+
 @Slf4j
 @Component
 public class ServiceBusConsumer {
-
 
     @Autowired
     ActionService actionService;
 
     ObjectMapper objectMapper = new ObjectMapper();
 
-    private static final String QUEUE_NAME = "<queue name>";
+    private static final String QUEUE1_NAME = "demoqueue";
+    private static final String QUEUE2_NAME = "queueaks";
 
-    @ServiceBusListener(destination = QUEUE_NAME)
-    public void handleMessageFromServiceBus(String message) throws JsonProcessingException {
+    @ServiceBusListener(destination = QUEUE1_NAME)
+    public void handleMessageFromServiceBusQ1(String message) throws JsonProcessingException {
         MenuOrder menuOrder = objectMapper.readValue(message, MenuOrder.class);
-       log.info("*******************Service Bus Message Recieved {} ", menuOrder.toString());
-       actionService.performAction(menuOrder);
+        log.info("*******************Service Bus Message Recieved on {} {} ", QUEUE1_NAME, menuOrder.toString());
+        actionService.performAction(menuOrder);
     }
 
-
+    @ServiceBusListener(destination = QUEUE2_NAME)
+    public void handleMessageFromServiceBusQ2(String message) throws JsonProcessingException {
+        MenuOrder menuOrder = objectMapper.readValue(message, MenuOrder.class);
+        log.info("*******************Service Bus Message Recieved on {} {} ", QUEUE2_NAME, menuOrder.toString());
+        actionService.performAction(menuOrder);
+    }
 
 }
