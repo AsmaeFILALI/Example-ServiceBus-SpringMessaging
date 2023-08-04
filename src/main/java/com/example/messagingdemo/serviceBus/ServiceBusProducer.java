@@ -24,6 +24,19 @@ public class ServiceBusProducer {
     private static final String QUEUE2_NAME = "queueaks";
 
 
+    public void SendMsgQ1Loop(MenuOrder menuOrder) throws JsonProcessingException {
+        
+        for(int i = 0;i<40000;i++)
+       { 
+        MenuOrder menuOrder1 = new MenuOrder();
+        menuOrder1.setOrderId(i);
+        menuOrder1.setOrderIdentifier(String.valueOf(i));
+        menuOrder1.setCustomerName(menuOrder.getCustomerName());
+        menuOrder1.setOrderList(menuOrder.getOrderList());
+
+        SendMsgQ1(menuOrder1);
+    }
+}
     public void SendMsgQ1(MenuOrder menuOrder) throws JsonProcessingException {
         serviceBusTemplate.sendAsync(QUEUE1_NAME, MessageBuilder.withPayload(objectMapper.writeValueAsString(menuOrder)).build()).subscribe();
         log.info("*******************ServiceBUS_MessageSent************: {}", menuOrder.toString());

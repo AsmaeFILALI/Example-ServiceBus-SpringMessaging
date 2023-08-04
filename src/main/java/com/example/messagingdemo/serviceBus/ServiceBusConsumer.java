@@ -14,6 +14,7 @@ import java.awt.*;
 @Component
 public class ServiceBusConsumer {
 
+
     @Autowired
     ActionService actionService;
 
@@ -22,18 +23,21 @@ public class ServiceBusConsumer {
     private static final String QUEUE1_NAME = "demoqueue";
     private static final String QUEUE2_NAME = "queueaks";
 
-    @ServiceBusListener(destination = QUEUE1_NAME)
-    public void handleMessageFromServiceBusQ1(String message) throws JsonProcessingException {
-        MenuOrder menuOrder = objectMapper.readValue(message, MenuOrder.class);
-        log.info("*******************Service Bus Message Recieved on {} {} ", QUEUE1_NAME, menuOrder.toString());
-        actionService.performAction(menuOrder);
-    }
 
-    @ServiceBusListener(destination = QUEUE2_NAME)
-    public void handleMessageFromServiceBusQ2(String message) throws JsonProcessingException {
-        MenuOrder menuOrder = objectMapper.readValue(message, MenuOrder.class);
-        log.info("*******************Service Bus Message Recieved on {} {} ", QUEUE2_NAME, menuOrder.toString());
-        actionService.performAction(menuOrder);
-    }
+   @ServiceBusListener(destination = QUEUE1_NAME)
+   public void handleMessageFromServiceBusQ1(String message) throws JsonProcessingException {
+       MenuOrder menuOrder = objectMapper.readValue(message, MenuOrder.class);
+      log.info("*******************Service Bus Message Recieved on {} {} ", QUEUE1_NAME,menuOrder.toString());
+      actionService.performAction(menuOrder);
+   }
+
+
+   @ServiceBusListener(destination = QUEUE2_NAME)
+   public void handleMessageFromServiceBusQ2(String message) throws JsonProcessingException {
+       MenuOrder menuOrder = objectMapper.readValue(message, MenuOrder.class);
+       log.info("*******************Service Bus Message Recieved on {} {} ", QUEUE2_NAME,menuOrder.toString());
+       actionService.performAction(menuOrder);
+   }
+
 
 }

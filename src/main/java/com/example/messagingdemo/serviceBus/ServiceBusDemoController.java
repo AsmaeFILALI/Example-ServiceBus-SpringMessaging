@@ -2,6 +2,9 @@ package com.example.messagingdemo.serviceBus;
 
 import com.example.messagingdemo.MenuOrder;
 import com.fasterxml.jackson.core.JsonProcessingException;
+
+import java.util.concurrent.CompletableFuture;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -24,5 +27,22 @@ public class ServiceBusDemoController {
     public String producer2(@RequestBody MenuOrder menuOrder) throws JsonProcessingException {
         serviceBusProducer.SendMsgQ2(menuOrder);
         return "Message sent to supplier senderQueue2";
+    }
+
+
+        @PostMapping(value = "/senderQueue1Loop")
+    public String producerQ1Loop(@RequestBody MenuOrder menuOrder) throws JsonProcessingException {
+
+        CompletableFuture.runAsync(()->{
+            try {
+                serviceBusProducer.SendMsgQ1Loop(menuOrder);
+            } catch (JsonProcessingException e) {
+                e.printStackTrace();
+            }
+        });
+       
+        
+        
+        return "Message sent to supplier senderQueue1";
     }
 }
